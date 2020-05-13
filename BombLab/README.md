@@ -6,7 +6,12 @@ When executing the binary, the program would request 6 string from user. If anyo
 then the program would call explode_bomb and exit program.
 User has to use reverse engineering assembly code to find out the input string and difuse the bomb.
 
-
+## Before you start
+You are suggested to have some basic understanding of Assembly langauge and memory allocation. Some suggestion:
+* Read *Bryant & O’Hallaron, "Computer Systems: a Programmer’s Perspective", 3rd Edition
+* Comfortable using [gdb](http://csapp.cs.cmu.edu/2e/docs/gdbnotes-x86-64.pdf)
+* Comfortable reading [x86-64 assembl](https://cs.brown.edu/courses/cs033/docs/guides/x64_cheatsheet.pdf),
+* Have knowledge of data structure: [BST](https://www.geeksforgeeks.org/binary-search-tree-data-structure/), and [Linklist](https://www.geeksforgeeks.org/data-structures/linked-list/)
 
 
 

